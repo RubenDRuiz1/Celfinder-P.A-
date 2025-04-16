@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar CPUs</title>
+</head>
+<body>
+    <h1>Lista de CPUs</h1>
+    <pre id="cpuList">
+        <!-- Aquí se insertará la lista de CPUs -->
+        <th:block th:each="cpu : ${cpus}">
+            CPU: <span th:text="${cpu.nombre}"></span>, Valor: <span th:text="${cpu.valor}"></span>
+            <br>
+        </th:block>
+    </pre>
+</body>
+</html>

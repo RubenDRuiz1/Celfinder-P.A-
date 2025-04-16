@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Administrador</title>
+</head>
+<body>
+    <h1>Registrar Administrador</h1>
+    <form id="registerForm">
+        <label for="nombreadmin">Nombre de Administrador:</label>
+        <input type="text" id="nombreadmin" name="nombreadmin" required><br><br>
+
+        <label for="contrasenaadmin">Contraseña:</label>
+        <input type="password" id="contrasenaadmin" name="contrasenaadmin" required><br><br>
+
+        <button type="submit">Registrar</button>
+    </form>
+
+    <div id="responseMessage"></div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const data = {
+                nombreadmin: document.getElementById('nombreadmin').value,
+                contrasenaadmin: document.getElementById('contrasenaadmin').value
+            };
+
+            fetch('/admins/registrar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.text())
+            .then(message => {
+                document.getElementById('responseMessage').innerText = message;
+            })
+            .catch(error => {
+                document.getElementById('responseMessage').innerText = 'Error: ' + error.message;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar CPU</title>
+</head>
+<body>
+    <h1>Registrar CPU</h1>
+    <form id="registrarCpuForm">
+        <label for="nombre">Nombre de la CPU:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <br>
+        <label for="valor">Valor de la CPU:</label>
+        <input type="number" id="valor" name="valor" required>
+        <br>
+        <button type="submit">Registrar CPU</button>
+    </form>
+
+    <p id="responseMessage"></p>
+
+    <script>
+        document.getElementById('registrarCpuForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            const valor = document.getElementById('valor').value;
+
+            const response = await fetch('/cpus/registrar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre, valor })
+            });
+
+            const message = await response.text();
+            document.getElementById('responseMessage').innerText = message;
+        });
+    </script>
+</body>
+</html>
+

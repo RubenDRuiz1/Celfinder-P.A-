@@ -1,0 +1,128 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url("fondo.png");
+    background-size: 1500px 1200px;
+    background-color: black;
+    width: 1300px;
+    height: 620px;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
+    gap: 5px;
+}
+
+.gridhorizontal{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
+    gap: 200px;
+}
+
+.logo{
+    float: right;
+    width: 20%;
+    position: relative;
+    bottom: 200px;
+}
+
+.barratitulo {
+    z-index: 1;
+    font-family: "Tempus Sans ITC", serif;
+    color: #ffffff;
+    font-size: 60px;
+    position: relative;
+    bottom: 60px;
+    right: 8px;
+    width: 1000px;
+    height: 150px;
+    border-radius: 0 0 100% 0;
+    background-color: #2C2D2CFF;
+}
+
+.texto {
+    z-index: 1;
+    font-family: "Tempus Sans ITC", serif;
+    box-sizing: border-box;
+    color: #000;
+    font-size: 30px;
+    text-align: center;
+    position: relative;
+    bottom: 110px;
+    left: 50px;
+}
+
+
+.texto2 {
+    font-family: "Tempus Sans ITC", serif;
+    color: #000;
+    font-size: 50px;
+    text-align: center;
+    position: relative;
+    bottom: 50px;
+}
+
+
+
+.boton {
+    width: 230px;
+    height: 85px;
+    background-color: #c8c7c7;
+    border-radius: 50px;
+}
+
+
+
+.circulo{
+    width: 120px;
+    height: 120px;
+    background-color: #9caec5;
+    background-image: url("logo.png");
+    background-size: 100px 100px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 100px;
+}
+
+
+.barracaracteristicas{
+    z-index: -1;
+    width: 670px;
+    height: 100px;
+    background-color: #bfbbbb;
+    border-radius: 100px;
+    opacity: 80%;
+    font-family: "Tempus Sans ITC", serif;
+    color: #000;
+    font-size: 30px;
+    text-align: center;
+
+}
+
+
+.etiqueta {
+    width: 400px;
+    height: 400px;
+    border-radius: 50px;
+    background-color: #c8c7c7;
+    opacity: 80%;
+    float: right;
+    position: relative;
+    left: 580px;
+    top: 90px;
+}
+
+.titulioetiqueta {
+    z-index: 1;
+    width: 360px;
+    height: 85px;
+    background-color: darkgray;
+    border-radius: 50px;
+    position: relative;
+    left: 160px;
+    top: 70px;
+    float: right;
+}

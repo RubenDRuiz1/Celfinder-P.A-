@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión Administrador</title>
+</head>
+<body>
+    <h1>Iniciar Sesión Administrador</h1>
+    <form id="loginForm">
+        <label for="nombreAdmin">Nombre de Administrador:</label>
+        <input type="text" id="nombreAdmin" name="nombreAdmin" required>
+
+        <label for="contrasenaAdmin">Contraseña:</label>
+        <input type="password" id="contrasenaAdmin" name="contrasenaAdmin" required>
+
+        <button type="submit">Iniciar Sesión</button>
+    </form>
+
+    <div id="responseMessage"></div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const data = {
+                nombreAdmin: document.getElementById('nombreAdmin').value,
+                contrasenaAdmin: document.getElementById('contrasenaAdmin').value
+            };
+
+            fetch('/admins/ingresar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Nombre de administrador o contraseña incorrectos');
+                }
+                return response.text();
+            })
+            .then(message => {
+                document.getElementById('responseMessage').innerText = message;
+                // Redirigir a otra página o realizar alguna acción en caso de éxito
+                // window.location.href = '/ruta_deseada'; // Descomentar y modificar si es necesario
+            })
+            .catch(error => {
+                document.getElementById('responseMessage').innerText = 'Error: ' + error.message;
+            });
+        });
+    </script>
+</body>
+</html>

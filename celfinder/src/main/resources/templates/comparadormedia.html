@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CellFinder TechMatch</title>
+    <link rel="icon" href="icono.ico" type="image/x-icon">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body, html {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .logo {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            font-size: 24px;
+            width: 500px;
+            height: 100px;
+            background: #000000;
+            border-radius: 0 0 85% 0;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo2 {
+            position: absolute;
+            top: -35px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+        }
+
+        .logo2 img {
+            max-width: 150px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .container {
+            display: flex;
+            gap: 40px;
+        }
+
+        .celular {
+            background-color: rgba(67, 33, 255, 0.486);
+            padding: 20px;
+            border-radius: 12%;
+            backdrop-filter: blur(20px);
+            border: 2px solid white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 70vh;
+            width: 300px;
+        }
+
+        .celular h2 {
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .input-group label {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            color: #fff;
+            pointer-events: none;
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            background-color: transparent;
+            border: 2px solid white;
+            border-radius: 5px;
+            color: #fff;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Cambiar el fondo a blanco cuando el campo está en uso */
+        .input-group input:focus {
+            background-color: white;
+            color: #000; /* El texto cambia a negro para visibilidad */
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label {
+            top: -20px;
+            left: 5px;
+            font-size: 12px;
+            color: #007bff;
+            opacity: 0; /* Desaparece */
+            transform: translateY(-20px);
+        }
+
+        .botones {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+        }
+
+        .botones button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+        }
+
+        .botones button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop class="video-background">
+        <source src="https://github.com/Rdrr01/celfinder-resource/raw/refs/heads/main/pspblue.mp4" type="video/mp4">
+    </video>
+    <div class="logo">CellFinder</div>
+    <div class="logo2">
+        <img src="https://github.com/Rdrr01/celfinder-resource/blob/main/logo.png?raw=true" alt="Logo 2">
+    </div>
+    <div class="container">
+        <div class="celular">
+            <h2>Registro de Celular</h2>
+            <form action="/compararmedia/registrar" method="post">
+                <div class="input-group">
+                    <label for="nombre">Nombre del Celular:</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="nombreCpu">Nombre del CPU:</label>
+                    <input type="text" id="nombreCpu" name="nombreCpu" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="ghz">Frecuencia (GHz):</label>
+                    <input type="number" step="0.1" id="ghz" name="ghz" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="camara">Cantidad de Cámaras:</label>
+                    <input type="number" id="camara" name="camara" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="ram">Cantidad de RAM (GB):</label>
+                    <input type="number" id="ram" name="ram" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="bateria">Capacidad de Batería (mAh):</label>
+                    <input type="number" id="bateria" name="bateria" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="almacenamiento">Capacidad de Almacenamiento (GB):</label>
+                    <input type="number" id="almacenamiento" name="almacenamiento" required>
+                </div>
+                <ul class="botones">
+                    <button type="submit">Registrar Celular</button>
+                </ul>
+            </form>
+        </div>
+        <div class="botones">
+            <a href="/menu"><button>Volver</button></a>
+        </div>
+    </div>
+    <script src="https://raw.githubusercontent.com/Rdrr01/celfinder-resource/refs/heads/main/scriptcc.js"></script>
+    <script>
+        function volver() {
+            alert('Volver');
+        }
+
+        function inicio() {
+            alert('Inicio');
+        }
+    </script>
+</body>
+</html>
