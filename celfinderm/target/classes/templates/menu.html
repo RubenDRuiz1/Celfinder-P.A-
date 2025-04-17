@@ -143,8 +143,31 @@
             content: url('logo.png');
         }
 
+        #img4:hover {
+            content: url('logo.png');
+        }
+
         .profile:hover .profile-title {
             opacity: 0;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ff4d4d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #e60000;
         }
     </style>
 </head>
@@ -156,6 +179,10 @@
     <div class="logo2">
         <img src="logo.png" alt="Logo 2">
     </div>
+
+    <!-- Botón de logout -->
+    <a href="/logout" class="logout-button">Cerrar sesión</a>
+
     <div class="menu-container">
         <div class="profile">
             <img src="https://github.com/Rukxxxx/ccc/blob/main/analizar%20logo.png?raw=true" alt="Usuario 1" class="profile-img" id="img1">
@@ -176,6 +203,13 @@
             <h2 class="profile-title">HISTORIAL</h2>
             <div class="profile-description">
                 <a href="/comparar/listar"><p>VER HISTORIAL</p></a>
+            </div>
+        </div>
+        <div class="profile">
+            <img src="https://github.com/Rukxxxx/ccc/blob/main/mercado%20logo.png?raw=true" alt="Usuario 4" class="profile-img" id="img4">
+            <h2 class="profile-title">MERCADO</h2>
+            <div class="profile-description">
+                <a href="/ventas/listar"><p>VER MERCADO</p></a>
             </div>
         </div>
     </div>

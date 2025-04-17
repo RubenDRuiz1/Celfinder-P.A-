@@ -1,34 +1,29 @@
 package com.celfinder.Model;
 
-/**
- *
- * @author E302
- */
 public class Celularmedia {
-    
-    private String nombre;
-    private double Ghz=2;
-    private int camara=40;
-    private int ram=6;
-    private int bateria=3500;
-    private int almacenamiento=128;
-    
 
+    private double ghz;
+    private int camara;
+    private int ram;
+    private int bateria;
+    private int almacenamiento;
 
-    public String getNombre() {
-        return nombre;
+    // Constructor con valores predefinidos que representan la media actual del mercado
+    public Celularmedia() {
+        this.ghz = 2.8;          // Frecuencia promedio (GHz)
+        this.camara = 48;        // Cámara promedio (MP)
+        this.ram = 8;            // RAM promedio (GB)
+        this.bateria = 4500;     // Batería promedio (mAh)
+        this.almacenamiento = 128; // Almacenamiento promedio (GB)
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
+    // Getters y setters
     public double getGhz() {
-        return Ghz;
+        return ghz;
     }
 
-    public void setGhz(double Ghz) {
-        this.Ghz = Ghz;
+    public void setGhz(double ghz) {
+        this.ghz = ghz;
     }
 
     public int getCamara() {
@@ -62,8 +57,4 @@ public class Celularmedia {
     public void setAlmacenamiento(int almacenamiento) {
         this.almacenamiento = almacenamiento;
     }
-    
-    
-    
 }
-

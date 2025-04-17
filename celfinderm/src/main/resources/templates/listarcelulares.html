@@ -1,32 +1,19 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <title>Lista de Teléfonos en Venta</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Celulares</title>
-    <link rel="icon" href="icono.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        * { 
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        body {
+            background-color: #f8f9fa;
             font-family: Arial, sans-serif;
         }
-
-        body, html {
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-size: cover;
-            background-position: center;
-            flex-direction: column;
-            overflow: hidden;
+        .container {
+            max-width: 1200px;
+            margin-top: 20px;
         }
-
         .video-background {
             position: fixed;
             top: 0;
@@ -36,7 +23,6 @@
             object-fit: cover;
             z-index: -1;
         }
-
         .logo {
             position: absolute;
             top: 0px;
@@ -52,7 +38,6 @@
             padding: 10px 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
         .logo2 {
             position: absolute;
             top: -35px;
@@ -66,65 +51,10 @@
             padding: 15px 25px;
             border-radius: 12px;
         }
-
         .logo2 img {
             max-width: 150px;
             height: auto;
             margin-right: 10px;
-        }
-
-        .container {
-            width: 99%; 
-            max-width: 1200px; 
-            margin: auto;
-            background: rgba(0, 0, 0, 0.137);
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #ffffff;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #004080; /* Fondo más oscuro y contrastante */
-            color: white; /* Color de texto más brillante */
-            font-weight: bold; /* Asegurar que el texto del encabezado sea más fuerte */
-            text-transform: uppercase; /* Capitalizar el texto para más énfasis */
-            letter-spacing: 1px; /* Espaciado entre letras para darle un toque más elegante */
-        }
-
-        tr:hover {
-            background-color: #fafafa;
-        }
-
-        a {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #fff;
-            text-decoration: none;
-            background-color: #001c795b;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        }
-
-        a:hover {
-            background-color: #0056b3;
         }
     </style>
 </head>
@@ -138,32 +68,38 @@
         <span></span>
     </div>
     <div class="container">
-        <h1>Lista de Celulares Registrados</h1>
-        <table class="table">
+        <h1 class="mb-4 text-white">Lista de Teléfonos en Venta</h1>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+
+        <a th:href="@{/admin}" class="btn btn-secondary mb-3">Panel de Administración</a>
+        <a th:href="@{/ventas/publicar}" class="btn btn-primary mb-3" sec:authorize="hasRole('ROLE_VENDEDOR')">Publicar Teléfono</a>
+
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>Frecuencia (GHz)</th>
-                    <th>Cámaras</th>
-                    <th>RAM (GB)</th>
-                    <th>Batería (mAh)</th>
-                    <th>Almacenamiento (GB)</th>
+                    <th>Precio</th>
+                    <th>Estado</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <th:block th:each="celular : ${celulares}">
-                    <tr>
-                        <td th:text="${celular.nombre}"></td>
-                        <td th:text="${celular.ghz}"></td>
-                        <td th:text="${celular.camara}"></td>
-                        <td th:text="${celular.ram}"></td>
-                        <td th:text="${celular.bateria}"></td>
-                        <td th:text="${celular.almacenamiento}"></td>
-                    </tr>
-                </th:block>
+                <tr th:each="telefono : ${telefonos}">
+                    <td th:text="${telefono.nombre}"></td>
+                    <td th:text="'$' + ${telefono.precio != null ? #numbers.formatDecimal(telefono.precio, 1, 2) : '0.00'}"></td>
+                    <td th:text="${telefono.estado}"></td>
+                    <td th:text="${telefono.descripcion}"></td>
+                    <td>
+                        <a th:href="@{/ventas/detalle/{id}(id=${telefono.id})}" class="btn btn-primary btn-sm">Ver Detalle</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(telefonos)}">
+                    <td colspan="5">No hay teléfonos disponibles.</td>
+                </tr>
             </tbody>
         </table>
-        <a href="/comparar/registro">Registrar otros celulares</a>
     </div>
 </body>
 </html>

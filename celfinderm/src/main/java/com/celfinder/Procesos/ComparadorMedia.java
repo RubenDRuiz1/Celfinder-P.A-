@@ -11,14 +11,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 @Component
 public class ComparadorMedia {
 
     private Celular celular;
     private List<String> resultadosComparacion = new ArrayList<>();
-    private Scanner scanner = new Scanner(System.in);
     private final MongoTemplate mongoTemplate;
 
     @Autowired
@@ -26,41 +24,16 @@ public class ComparadorMedia {
         this.mongoTemplate = mongoTemplate;
     }
 
-    public void registrarCelular() {
-        celular = new Celular();
-
-        System.out.print("Ingrese el nombre del celular: ");
-        celular.setNombre(scanner.nextLine());
-
-        System.out.print("Ingrese el nombre del CPU: ");
-        celular.setNombreCpu(scanner.nextLine());
-
-        System.out.print("Ingrese la frecuencia en GHz: ");
-        celular.setGhz(scanner.nextDouble());
-
-        System.out.print("Ingrese la cantidad de cámaras: ");
-        celular.setCamara(scanner.nextInt());
-
-        System.out.print("Ingrese la cantidad de RAM: ");
-        celular.setRam(scanner.nextInt());
-
-        System.out.print("Ingrese la capacidad de batería: ");
-        celular.setBateria(scanner.nextInt());
-
-        System.out.print("Ingrese la capacidad de almacenamiento: ");
-        celular.setAlmacenamiento(scanner.nextInt());
-
-        // Comparar con Celularmedia
-        Celularmedia celularMedia = new Celularmedia(); // Inicializar con valores predeterminados
-        compararConMedia(celular, celularMedia);
-
-        // Guardar o actualizar celular en la base de datos
-        guardarCelular(celular);
+    // Método ajustado para aceptar un Celular y compararlo con la media predefinida
+    public void guardarCelular(Celular celular) {
+        this.celular = celular;
+        this.resultadosComparacion.clear();
+        compararConMedia(celular, new Celularmedia());
     }
 
     private void compararConMedia(Celular celular, Celularmedia celularMedia) {
         compararCaracteristicas("Frecuencia (GHz)", celular.getGhz(), celularMedia.getGhz());
-        compararCaracteristicas("Cámaras", celular.getCamara(), celularMedia.getCamara());
+        compararCaracteristicas("Cámara (MP)", celular.getCamara(), celularMedia.getCamara());
         compararCaracteristicas("RAM (GB)", celular.getRam(), celularMedia.getRam());
         compararCaracteristicas("Batería (mAh)", celular.getBateria(), celularMedia.getBateria());
         compararCaracteristicas("Almacenamiento (GB)", celular.getAlmacenamiento(), celularMedia.getAlmacenamiento());
@@ -68,15 +41,25 @@ public class ComparadorMedia {
 
     private void compararCaracteristicas(String nombre, double valor1, double valor2) {
         if (valor1 < valor2) {
-            resultadosComparacion.add("La característica de " + nombre + " es inferior a la media.");
+            resultadosComparacion.add(String.format("%s: %.2f es inferior a la media del mercado (%.2f).", nombre, valor1, valor2));
         } else if (valor1 > valor2) {
-            resultadosComparacion.add("La característica de " + nombre + " es superior a la media.");
+            resultadosComparacion.add(String.format("%s: %.2f es superior a la media del mercado (%.2f).", nombre, valor1, valor2));
         } else {
-            resultadosComparacion.add("La característica de " + nombre + " es igual a la media.");
+            resultadosComparacion.add(String.format("%s: %.2f es igual a la media del mercado (%.2f).", nombre, valor1, valor2));
         }
     }
 
-    public void guardarCelular(Celular celular) {
+    // Método para registrar un celular (usado en /compararmedia, no en /ventas/comparar-media)
+    public void registrarCelular(Celular celular) {
+        this.celular = celular;
+        // Comparar con Celularmedia
+        Celularmedia celularMedia = new Celularmedia();
+        compararConMedia(celular, celularMedia);
+        // Guardar o actualizar celular en la base de datos
+        guardarCelularEnBaseDatos(celular);
+    }
+
+    private void guardarCelularEnBaseDatos(Celular celular) {
         // Verificar si el celular ya existe en la base de datos
         Celular celularExistente = obtenerCelularExistente(celular);
         if (celularExistente != null) {
@@ -88,7 +71,6 @@ public class ComparadorMedia {
             try {
                 celular.setSeleccion(1); // Inicializar Seleccion en 1
                 mongoTemplate.save(celular, "celulares");
-                System.out.println("Celular guardado en la base de datos.");
             } catch (Exception e) {
                 System.err.println("Error al guardar el celular: " + e.getMessage());
                 e.printStackTrace();
@@ -142,8 +124,6 @@ public class ComparadorMedia {
 
             Update update = new Update().set("seleccion", nuevaSeleccion);
             mongoTemplate.updateFirst(query, update, Celular.class, "celulares");
-
-            System.out.println("Seleccion actualizada para el celular " + celular.getNombre());
         } catch (Exception e) {
             System.err.println("Error al actualizar seleccion: " + e.getMessage());
             e.printStackTrace();
