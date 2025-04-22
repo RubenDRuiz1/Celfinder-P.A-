@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tendencia de Celulares</title>
+</head>
+<body>
+    <h1>Tendencia de Celulares Más Registrados</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Total Registrados</th>
+            </tr>
+        </thead>
+        <tbody>
+            <th:block th:each="celular : ${tendencia}">
+                <tr>
+                    <td th:text="${celular.nombre}"></td>
+                    <td th:text="${celular.seleccion}"></td> <!-- Asegúrate de tener el método correcto -->
+                </tr>
+            </th:block>
+        </tbody>
+    </table>
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
+    <a href="/celulares/listar">Ver Listado de Celulares</a>
+</body>
+</html>
