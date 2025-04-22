@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crear Notificación</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Crear Notificación</h1>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+
+        <form th:action="@{/admin/crear-notificacion}" th:object="${notificacion}" method="post">
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="enviarATodos" name="enviarATodos">
+                <label class="form-check-label" for="enviarATodos">Enviar a todos los usuarios</label>
+            </div>
+            <div class="mb-3">
+                <label for="usuarioId" class="form-label">ID del Usuario Destinatario</label>
+                <input type="text" class="form-control" id="usuarioId" th:field="*{usuarioId}" required>
+            </div>
+            <div class="mb-3">
+                <label for="mensaje" class="form-label">Mensaje</label>
+                <textarea class="form-control" id="mensaje" th:field="*{mensaje}" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar Notificación</button>
+            <a th:href="@{/admin}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+
+    <script>
+        // Script para deshabilitar el campo usuarioId cuando se selecciona "Enviar a todos"
+        document.getElementById('enviarATodos').addEventListener('change', function() {
+            const usuarioIdInput = document.getElementById('usuarioId');
+            if (this.checked) {
+                usuarioIdInput.disabled = true;
+                usuarioIdInput.value = '';
+                usuarioIdInput.removeAttribute('required');
+            } else {
+                usuarioIdInput.disabled = false;
+                usuarioIdInput.setAttribute('required', 'required');
+            }
+        });
+    </script>
+</body>
+</html>

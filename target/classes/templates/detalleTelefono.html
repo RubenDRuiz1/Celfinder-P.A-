@@ -1,0 +1,110 @@
+```html
+<!DOCTYPE html>
+<html xmlns:th="httparound://www.thymeleaf.org">
+<head>
+    <title>Detalles del Teléfono</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 20px;
+        }
+        .telefono-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .specifications {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .specifications h3 {
+            margin-bottom: 15px;
+        }
+        .action-buttons {
+            margin-top: 20px;
+        }
+        .action-buttons .btn {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Detalles del Teléfono</h1>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+
+        <div th:object="${telefono}">
+            <h2 th:text="*{nombre} ?: 'Sin nombre'">Nombre del Teléfono</h2>
+            <img th:if="*{imagenBase64}" th:src="@{'data:image/jpeg;base64,' + *{imagenBase64}}" class="telefono-img" alt="Imagen del teléfono">
+            <img th:unless="*{imagenBase64}" src="https://via.placeholder.com/300x200" class="telefono-img" alt="Sin imagen">
+            <p><strong>Precio:</strong> <span th:text="'$' + ${telefono.precio != null ? #numbers.formatDecimal(telefono.precio, 1, 2) : '0.00'}">0.00</span></p>
+            <p><strong>Estado:</strong> <span th:text="*{estado} ?: 'No especificado'"></span></p>
+            <p><strong>Descripción:</strong> <span th:text="*{descripcion} ?: 'Sin descripción'"></span></p>
+            <p><strong>Fecha de Publicación:</strong> <span th:text="${telefono.fechaPublicacion != null ? #temporals.format(telefono.fechaPublicacion, 'dd/MM/yyyy HH:mm') : 'No disponible'}"></span></p>
+            <p><strong>Estado de Venta:</strong> <span th:text="*{estadoVenta} ?: 'No especificado'"></span></p>
+            <p><strong>Publicado por:</strong> <span th:text="${nombreVendedor} + ' con ID ' + *{vendedorId} ?: 'Vendedor desconocido'"></span></p>
+            <div class="specifications">
+                <h3>Especificaciones Técnicas</h3>
+                <p><strong>Frecuencia (GHz):</strong> <span th:text="*{ghz} ?: 'No especificado'"></span></p>
+                <p><strong>Cámara (MP):</strong> <span th:text="*{camara} ?: 'No especificado'"></span></p>
+                <p><strong>RAM (GB):</strong> <span th:text="*{ram} ?: 'No especificado'"></span></p>
+                <p><strong>Batería (mAh):</strong> <span th:text="*{bateria} ?: 'No especificado'"></span></p>
+                <p><strong>Almacenamiento (GB):</strong> <span th:text="*{almacenamiento} ?: 'No especificado'"></span></p>
+                <p><strong>CPU:</strong> <span th:text="*{nombreCpu} ?: 'No especificado'"></span></p>
+            </div>
+            <div class="action-buttons">
+                <form th:action="@{/ventas/comprar/{id}(id=*{id})}" method="post" th:if="*{estadoVenta == 'disponible'}" th:unless="${userId != null and userId == telefono.vendedorId}">
+                    <button type="submit" class="btn btn-success">Comprar</button>
+                </form>
+                <form th:action="@{/ventas/eliminar/{id}(id=*{id})}" method="post" id="eliminarForm" th:if="${userId != null and (userId == telefono.vendedorId or userRoles.contains('ROLE_ADMIN'))}">
+                    <button type="submit" class="btn btn-danger" id="eliminarBtn">Eliminar</button>
+                </form>
+                <form th:action="@{/ventas/comparar/{id}(id=*{id})}" method="get" class="mt-3">
+                    <div class="input-group">
+                        <select name="idOtroTelefono" class="form-control" required>
+                            <option value="">Selecciona otro teléfono para comparar</option>
+                            <option th:each="otroTelefono : ${otrosTelefonos}" 
+                                    th:value="${otroTelefono.id}" 
+                                    th:text="${otroTelefono.nombre}" 
+                                    th:disabled="${otroTelefono.id == telefono.id}"></option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Comparar con otro</button>
+                    </div>
+                </form>
+                <a th:href="@{/ventas/comparar-media/{id}(id=*{id})}" class="btn btn-primary mt-2">Comparar con Media</a>
+            </div>
+        </div>
+        <a th:href="@{/ventas/listar}" class="btn btn-secondary mt-3">Volver al Listado</a>
+        <a th:href="@{/ventas/historial-compras}" class="btn btn-primary mt-3">Ver Historial de Compras</a>
+    </div>
+
+    <script th:inline="javascript">
+        const userRoles = /*[[${userRoles}]]*/ [];
+        const userId = /*[[${userId}]]*/ null;
+        const vendedorId = /*[[${telefono.vendedorId}]]*/ null;
+
+        const hasRequiredRole = userRoles.includes("ROLE_ADMIN") || (userId && userId === vendedorId);
+
+        if (!hasRequiredRole) {
+            const eliminarForm = document.getElementById("eliminarForm");
+            if (eliminarForm) {
+                eliminarForm.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
+```

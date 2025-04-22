@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CellFinder TechMatch</title>
+    <link rel="icon" href="icono.ico" type="image/x-icon">
+    <script type="module" src="https://unpkg.com/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
+	
+	
+</head>
+<body>
+    <video autoplay muted loop class="video-background">
+        <source src="https://github.com/Rdrr01/celfinder-resource/raw/refs/heads/main/pspblue.mp4" type="video/mp4">
+    </video>
+	<style> 
+			* {
+			    box-sizing: border-box;
+			    margin: 0;
+			    padding: 0;
+			    font-family: Arial, sans-serif;
+			}
+
+			body, html {
+			    height: 100vh;
+			    margin: 0;
+			    padding: 0;
+			    width: 100%;
+			    display: flex;
+			    justify-content: center;
+			    align-items: center;
+			    background-size: cover;
+			    background-position: center;
+			    flex-direction: column;
+			    overflow: hidden;
+			}
+
+			.video-background {
+			    position: fixed;
+			    top: 0;
+			    left: 0;
+			    width: 100%;
+			    height: 100%;
+			    object-fit: cover;
+			    z-index: -1;
+			}
+
+			.logo {
+			    position: absolute;
+			    top: 0px;
+			    left: 0px;
+			    font-size: 24px;
+			    width: 500px;
+			    height: 100px;
+			    background: #000000;
+			    border-radius: 0 0 85% 0;
+			    color: aliceblue;
+			    font-weight: bold;
+			    color: white;
+			    background-color: rgba(0, 0, 0, 0.7);
+			    padding: 10px 20px;
+			    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			}
+
+			.logo2 {
+			    position: absolute;
+			    top: -35px;
+			    right: 20px;
+			    display: flex;
+			    align-items: center;
+			    justify-content: center;
+			    font-size: 24px;
+			    font-weight: bold;
+			    color: white;
+			    padding: 15px 25px;
+			    border-radius: 12px;
+			}
+
+			.logo2 img {
+			    max-width: 150px;
+			    height: auto;
+			    margin-right: 10px;
+			}
+
+			.container {
+			    display: flex;
+			    flex-direction: column;
+			    gap: 20px;
+			    position: absolute;
+			    top: 50px;
+			    left: 10px; 
+			}
+
+			.button-container {
+			    display: flex;
+			    gap: 20px; 
+			    position: absolute;
+			    top: -43px; 
+			    left: 0; 
+			    z-index: 30; 
+			}
+
+			.btn {
+			    background-color: #007bff67; 
+			    border: 2px solid #ffffff; 
+			    border-radius: 15px;
+			    padding: 10px 20px; 
+			    cursor: pointer; 
+			    transition: background-color 0.3s ease;
+			}
+
+			.btn:hover {
+			    background-color: #0056b3; 
+			}
+
+			.box {
+			    background: #000000;
+			    background-color: rgba(0, 0, 0, 0.7);
+			    color: white;
+			    border-radius: 8px;
+			    overflow: hidden;
+			    width: 300px;
+			    transition: max-height 0.3s ease;
+			    cursor: pointer;
+			    max-height: 60px; 
+			}
+
+			.title {
+			    display: flex;
+			    align-items: center;
+			    padding: 20px;
+			    font-weight: bold;
+			    text-align: center;
+			    background-color: rgba(6, 41, 241, 0.808);
+			    position: relative;
+			}
+
+			.title .image, .title .hover-image {
+			    width: 40px; /* Tamaño reducido */
+			    height: 40px; /* Tamaño reducido */
+			    margin-right: 15px;
+			    border-radius: 8px;
+			    transition: opacity 0.3s ease, transform 0.3s ease;
+			}
+
+			.title .hover-image {
+			    position: absolute;
+			    top: 20px;
+			    left: 15px;
+			    opacity: 0;
+			}
+
+			.box:hover .title .image {
+			    opacity: 0;
+			    transform: scale(0.5); 
+			}
+
+			.box:hover .title .hover-image {
+			    opacity: 1;
+			    transform: scale(1);
+			}
+
+			.content {
+			    padding: 20px;
+			    display: none; 
+			}
+
+			.box:hover {
+			    max-height: 200px;
+			}
+
+			.box:hover .content {
+			    display: block;
+			}
+			.container {
+			    display: flex;
+			    flex-direction: column;
+			    gap: 20px;
+			    position: absolute; 
+			    top: 150px; 
+			    left: 10px; 
+			}
+
+			.model-container {
+			    position: absolute; 
+			    top: 85px; 
+			    right: 300px;
+			    width: 300px; 
+			    height: 200px; 
+			    background: transparent ;
+			    border-radius: 8px; 
+			}
+
+			model-viewer {
+			    width: 700px;
+			    height: 700px;
+			    border-radius: 8px; 
+			}
+			
+			</style>
+				
+    <div class="logo">CellFinder</div>
+    <div class="logo2">
+        <img src="logo.png" alt="Logo 2">
+        <span></span>
+    </div>
+    <div class="container">
+        <div class="button-container">
+            <a href="/usuarios/login"><button class="btn">Ingresar</button></a>
+            <a href="/usuarios/registro"><button class="btn">Registrar</button></a>
+        </div>
+        <div class="box">
+            <div class="title">
+                <img src="logo.png" alt="Imagen 1" class="image">
+                <img src="https://github.com/Rukxxxx/ccc/blob/main/comparador%20logo.png?raw=true" alt="Imagen Hover 1" class="hover-image">
+                comparador de dispositivos
+            </div>
+            <div class="content">
+                <p>descubir que dispositivo te conviene mas</p>
+            </div>
+        </div>
+        <div class="box">
+            <div class="title">
+                <img src="logo.png" alt="Imagen 2" class="image">
+                <img src="https://github.com/Rukxxxx/ccc/blob/main/analizar%20logo.png?raw=true" alt="Imagen Hover 2" class="hover-image">
+                analizar las gamas
+            </div>
+            <div class="content">
+                <p>sabras si el dispositivo que quieres es mas potente que la media del mercado actual</p>
+            </div>
+        </div>
+        <div class="box">
+            <div class="title">
+                <img src="logo.png" alt="Imagen 3" class="image">
+                <img src="https://github.com/Rukxxxx/ccc/blob/main/registrar%20logo.png?raw=true" alt="Imagen Hover 3" class="hover-image">
+                registrar dispositivos
+            </div>
+            <div class="content">
+                <p>almacenamiento de los dispositivos que introduzcan para que puedas ver que haz introducido</p>
+            </div>
+        </div>
+        <div class="box">
+            <div class="title">
+                <img src="logo.png" alt="Imagen 4" class="image">
+                <img src="https://github.com/Rukxxxx/ccc/blob/main/historial%20logo.png?raw=true" alt="Imagen Hover 4" class="hover-image">
+                poder revisar el historial
+            </div>
+            <div class="content">
+                <p>Información adicional sobre el Cuadro 4.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contenedor para el modelo 3D -->
+    <div class="model-container">
+        <model-viewer src="celar.glb" alt="Un modelo 3D" auto-rotate camera-controls></model-viewer>
+    </div>
+</body>
+</html>
