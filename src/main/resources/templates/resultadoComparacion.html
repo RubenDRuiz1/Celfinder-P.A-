@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Comparación | CellFinder</title>
+    <link rel="icon" href="icono.ico" type="image/x-icon">
+    <script type="module" src="https://unpkg.com/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
+
+    <!-- Estilos CSS integrados -->
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body, html {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .logo {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            font-size: 24px;
+            width: 500px;
+            height: 100px;
+            background: #000000;
+            border-radius: 0 0 85% 0;
+            color: aliceblue;
+            font-weight: bold;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo2 {
+            position: absolute;
+            top: -35px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+        }
+
+        .logo2 img {
+            max-width: 150px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .container-wrapper {
+            display: flex; 
+            gap: 20px; 
+        }
+
+        .container {
+            position: relative; 
+            width: 800px; 
+            height: 960px; 
+            border-radius: 5px; 
+            overflow: hidden; 
+            background-color: rgba(37, 37, 37, 0.39); 
+            border: 2px solid white; 
+            transition: transform 0.3s; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .telefono-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .telefono-info {
+            text-align: center;
+            width: 45%;
+        }
+
+        .telefono-info img {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .result-wrapper {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 100%;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .result-wrapper h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #00aaff;
+            text-align: center;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 12px;
+            color: #ddd;
+            font-size: 1.2em;
+        }
+
+        .btn-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-primary, .btn-secondary {
+            font-weight: bold;
+            margin: 10px;
+            padding: 12px 30px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .alert-info {
+            background-color: rgba(0, 123, 255, 0.7);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo de video -->
+    <video autoplay muted loop class="video-background">
+        <source src="pspblue.mp4" type="video/mp4">
+    </video>
+    
+    <!-- Logo y elementos adicionales -->
+    <div class="logo">CellFinder</div>
+    <div class="logo2">
+        <img src="https://github.com/Rdrr01/celfinder-resource/blob/main/logo.png?raw=true" alt="Logo 2">
+    </div>
+
+    <div class="container">
+        <h1>Resultados de Comparación</h1>
+        
+        <!-- Mensaje de confirmación -->
+        <div class="alert alert-info" th:if="${mensaje}">
+            <p th:text="${mensaje}"></p>
+        </div>
+        
+        <!-- Información de los teléfonos comparados -->
+        <div class="telefono-container">
+            <div class="telefono-info" th:object="${telefono1}">
+                <h3 th:text="*{nombre} ?: 'Teléfono 1'"></h3>
+                <img th:if="*{imagenBase64}" th:src="@{'data:image/jpeg;base64,' + *{imagenBase64}}" alt="Teléfono 1">
+                <img th:unless="*{imagenBase64}" src="https://via.placeholder.com/300x200" alt="Sin imagen">
+            </div>
+            <div class="telefono-info" th:object="${telefono2}">
+                <h3 th:text="*{nombre} ?: 'Teléfono 2'"></h3>
+                <img th:if="*{imagenBase64}" th:src="@{'data:image/jpeg;base64,' + *{imagenBase64}}" alt="Teléfono 2">
+                <img th:unless="*{imagenBase64}" src="https://via.placeholder.com/300x200" alt="Sin imagen">
+            </div>
+        </div>
+
+        <!-- Lista de resultados de comparación -->
+        <div class="result-wrapper">
+            <h2>Resultados:</h2>
+            <ul class="list-group" th:if="${resultados}">
+                <th:block th:each="resultado : ${resultados}">
+                    <li class="list-group-item" th:text="${resultado}"></li>
+                </th:block>
+            </ul>
+        </div>
+
+        <hr>
+
+        <!-- Botones abajo de la caja -->
+        <div class="btn-wrapper">
+            <a class="btn btn-primary" href="/comparar/registro">Registrar otros celulares</a>
+            <a class="btn btn-secondary" href="/comparar/listar">Ver lista de celulares registrados</a>
+        </div>
+    </div>
+</body>
+</html>
