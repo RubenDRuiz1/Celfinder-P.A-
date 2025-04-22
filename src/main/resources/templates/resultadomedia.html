@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparación con la Media del Mercado | CellFinder</title>
+    <link rel="icon" href="icono.ico" type="image/x-icon">
+    <script type="module" src="https://unpkg.com/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
+
+    <!-- Estilos CSS integrados -->
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body, html {
+            height: auto;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .logo {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            font-size: 24px;
+            width: 500px;
+            height: 100px;
+            background: #000000;
+            border-radius: 0 0 85% 0;
+            color: white;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo2 {
+            position: absolute;
+            top: -35px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+        }
+
+        .logo2 img {
+            max-width: 150px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .container {
+            margin-top: 120px;
+            margin-bottom: 60px;
+            width: 90%;
+            max-width: 800px;
+            min-height: 600px;
+            height: auto;
+            border-radius: 5px;
+            background-color: rgba(37, 37, 37, 0.39);
+            border: 2px solid white;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 20px;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .image-container {
+            width: 100%;
+            max-height: 300px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .titulo {
+            background-color: rgba(0, 0, 0, 0.192);
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        .result-wrapper {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            width: 100%;
+            flex-grow: 1;
+            overflow-y: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .result-wrapper h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #00aaff;
+            text-align: center;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 12px;
+            color: #ddd;
+            font-size: 1.2em;
+        }
+
+        .btn-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn-primary, .btn-secondary {
+            font-weight: bold;
+            padding: 12px 30px;
+            text-decoration: none;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .alert-danger {
+            background-color: rgba(255, 99, 71, 0.7);
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo de video -->
+    <video autoplay muted loop class="video-background">
+        <source src="https://github.com/Rdrr01/celfinder-resource/raw/refs/heads/main/pspblue.mp4" type="video/mp4">
+    </video>
+    
+    <!-- Logo y elementos adicionales -->
+    <div class="logo">CellFinder</div>
+    <div class="logo2">
+        <img src="logo.png" alt="Logo 2">
+    </div>
+
+    <div class="container">
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <div th:object="${telefono}">
+            <h1 class="titulo" th:text="*{nombre} ?: 'Sin nombre'">Nombre del Teléfono</h1>
+            <div class="image-container">
+                <img th:if="*{imagenBase64}" th:src="@{'data:image/jpeg;base64,' + *{imagenBase64}}" alt="Imagen del teléfono">
+                <img th:unless="*{imagenBase64}" src="https://via.placeholder.com/300x200" alt="Sin imagen">
+            </div>
+
+            <div class="result-wrapper">
+                <h2>Comparación con la Media del Mercado</h2>
+                <ul>
+                    <li th:each="resultado : ${resultados}" th:text="${resultado}"></li>
+                    <li th:if="${#lists.isEmpty(resultados)}">No hay resultados disponibles para mostrar.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="btn-wrapper">
+            <a th:href="@{/ventas/detalle/{id}(id=${telefono.id})}" class="btn btn-primary">Volver a Detalles</a>
+            <a th:href="@{/ventas/listar}" class="btn btn-secondary">Volver al Listado</a>
+        </div>
+    </div>
+</body>
+</html>

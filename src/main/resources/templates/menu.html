@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - CellFinder</title>
+    <link rel="icon" href="icono.ico" type="image/x-icon">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body, html {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .logo {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            font-size: 20px;
+            width: 400px;
+            height: 80px;
+            background: #000000;
+            border-radius: 0 0 85% 0;
+            color: aliceblue;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 8px 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo2 {
+            position: absolute;
+            top: -25px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .logo2 img {
+            max-width: 120px;
+            height: auto;
+            margin-right: 8px;
+        }
+
+        .menu-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            max-width: 1000px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .profile {
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+            color: white;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .profile-title {
+            font-size: 18px;
+            margin-bottom: 8px;
+            transition: opacity 0.3s ease;
+        }
+
+        .profile-description {
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            position: absolute;
+            bottom: -10px;
+            left: 15px;
+            right: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .profile:hover .profile-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile:hover .profile-img {
+            transform: translateY(-15px);
+        }
+
+        #img1:hover, #img2:hover, #img3:hover, #img4:hover, #img5:hover, #img6:hover, #img7:hover, #img8:hover {
+            content: url('logo.png');
+        }
+
+        .profile:hover .profile-title {
+            opacity: 0;
+        }
+
+        .button-container {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .logout-button, .admin-button {
+            background-color: #ff4d4d;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #e60000;
+        }
+
+        .admin-button {
+            background-color: #007bff;
+        }
+
+        .admin-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Media queries para pantallas más pequeñas */
+        @media (max-width: 768px) {
+            .profile {
+                width: 160px;
+            }
+            .profile-img {
+                width: 100px;
+                height: 100px;
+            }
+            .profile-title {
+                font-size: 16px;
+            }
+            .profile-description {
+                font-size: 11px;
+                padding: 8px;
+            }
+            .logo {
+                width: 300px;
+                height: 60px;
+                font-size: 18px;
+                padding: 6px 12px;
+            }
+            .logo2 {
+                top: -20px;
+                padding: 8px 15px;
+            }
+            .logo2 img {
+                max-width: 100px;
+            }
+            .button-container {
+                top: 10px;
+                right: 10px;
+                gap: 8px;
+            }
+            .logout-button, .admin-button {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile {
+                width: 140px;
+            }
+            .profile-img {
+                width: 80px;
+                height: 80px;
+            }
+            .profile-title {
+                font-size: 14px;
+            }
+            .profile-description {
+                font-size: 10px;
+                padding: 6px;
+            }
+            .menu-container {
+                gap: 10px;
+            }
+            .button-container {
+                top: 8px;
+                right: 8px;
+                gap: 6px;
+            }
+            .logout-button, .admin-button {
+                padding: 5px 10px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop class="video-background">
+        <source src="https://github.com/Rdrr01/celfinder-resource/raw/refs/heads/main/pspblue.mp4" type="video/mp4">
+    </video>
+    <div class="logo">CellFinder</div>
+    <div class="logo2">
+        <img src="logo.png" alt="Logo 2">
+    </div>
+
+    <!-- Contenedor para los botones -->
+    <div class="button-container">
+        <a href="/logout" class="logout-button">Cerrar sesión</a>
+        <a th:if="${#lists.contains(userRoles, 'ROLE_ADMIN')}" href="/admin" class="admin-button">Panel Admin</a>
+    </div>
+
+    <div class="menu-container">
+        <div class="profile">
+            <img src="https://github.com/Rukxxxx/ccc/blob/main/analizar%20logo.png?raw=true" alt="Usuario 1" class="profile-img" id="img1">
+            <h2 class="profile-title">COMPARADOR MEDIA ACTUAL</h2>
+            <div class="profile-description">
+                <a href="/compararmedia/registro"><p>COMPARAR</p></a>
+            </div>
+        </div>
+        <div class="profile">
+            <img src="https://github.com/Rukxxxx/ccc/blob/main/comparador%20logo.png?raw=true" alt="Usuario 2" class="profile-img" id="img2">
+            <h2 class="profile-title">COMPARAR CELULARES</h2>
+            <div class="profile-description">
+                <a href="/comparar/registro"><p>COMPARAR</p></a>
+            </div>
+        </div>
+        <div class="profile">
+            <img src="https://github.com/Rukxxxx/ccc/blob/main/mercado%20logo.png?raw=true" alt="Usuario 4" class="profile-img" id="img3">
+            <h2 class="profile-title">MERCADO</h2>
+            <div class="profile-description">
+                <a href="/ventas/listar"><p>VER MERCADO</p></a>
+            </div>
+        </div>
+        <div class="profile">
+            <img src="https://github.com/Rukxxxx/ccc/blob/main/solicitudes%20logo.png?raw=true" alt="Solicitudes" class="profile-img" id="img4">
+            <h2 class="profile-title">SOLICITUDES</h2>
+            <div class="profile-description">
+                <a id="solicitudesLink" href="/ventas/historial-compras"><p id="solicitudesText">VER ESTADO DE SOLICITUDES</p></a>
+            </div>
+        </div>
+        <div class="profile">
+            <img src="https://github.com/Rukxxxx/ccc/blob/main/historial%20logo.png?raw=true" alt="Historial Compras" class="profile-img" id="img5">
+            <h2 class="profile-title">HISTORIAL COMPRAS</h2>
+            <div class="profile-description">
+                <a href="/ventas/historial-compras"><p>VER HISTORIAL</p></a>
+            </div>
+        </div>
+        <div class="profile">
+            <img src="https://github.com/Rukxxxx/ccc/blob/main/notificaciones%20logo.png?raw=true" alt="Notificaciones" class="profile-img" id="img7">
+            <h2 class="profile-title">NOTIFICACIONES</h2>
+            <div class="profile-description">
+                <a href="/ventas/notificaciones"><p>VER NOTIFICACIONES</p></a>
+            </div>
+        </div>
+        <div class="profile" th:if="${!#lists.contains(userRoles, 'ROLE_VENDEDOR') && !#lists.contains(userRoles, 'ROLE_ADMIN')}">
+            <img src="https://github.com/Rukxxxx/ccc/blob/main/vendedor%20logo.png?raw=true" alt="Solicitar Vendedor" class="profile-img" id="img8">
+            <h2 class="profile-title">SER VENDEDOR</h2>
+            <div class="profile-description">
+                <a href="/admin/solicitar-vendedor"><p>SOLICITAR</p></a>
+            </div>
+        </div>
+        <div class="profile" th:if="${#lists.contains(userRoles, 'ROLE_VENDEDOR') || #lists.contains(userRoles, 'ROLE_ADMIN')}">
+            <img src="https://github.com/Rukxxxx/ccc/blob/main/historial%20logo.png?raw=true" alt="Historial Ventas" class="profile-img" id="img6">
+            <h2 class="profile-title">HISTORIAL VENTAS</h2>
+            <div class="profile-description">
+                <a href="/ventas/historial-ventas"><p>VER HISTORIAL</p></a>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        // Pasamos los roles del usuario desde el backend usando Thymeleaf
+        const userRoles = /*[[${userRoles}]]*/ [];
+
+        // Determinar si el usuario tiene el rol de vendedor o administrador
+        const isVendedorOrAdmin = userRoles.includes("ROLE_VENDEDOR") || userRoles.includes("ROLE_ADMIN");
+
+        // Obtener el enlace y el texto del enlace de "Solicitudes"
+        const solicitudesLink = document.getElementById("solicitudesLink");
+        const solicitudesText = document.getElementById("solicitudesText");
+
+        // Ajustar el enlace y el texto según el rol del usuario
+        if (isVendedorOrAdmin) {
+            solicitudesLink.href = "/ventas/gestionar-solicitudes";
+            solicitudesText.textContent = "GESTIONAR SOLICITUDES";
+        } else {
+            solicitudesLink.href = "/ventas/historial-compras";
+            solicitudesText.textContent = "VER ESTADO DE SOLICITUDES";
+        }
+    </script>
+</body>
+</html>
