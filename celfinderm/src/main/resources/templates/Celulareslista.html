@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Celulares</title>
+</head>
+<body>
+    <h1>Listado de Celulares</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>GHz</th>
+                <th>Cámara</th>
+                <th>RAM</th>
+                <th>Batería</th>
+                <th>Almacenamiento</th>
+                <th>Seleccion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <th:block th:each="celular : ${celulares}">
+                <tr>
+                    <td th:text="${celular.id}"></td>
+                    <td th:text="${celular.nombre}"></td>
+                    <td th:text="${celular.ghz}"></td>
+                    <td th:text="${celular.camara}"></td>
+                    <td th:text="${celular.ram}"></td>
+                    <td th:text="${celular.bateria}"></td>
+                    <td th:text="${celular.almacenamiento}"></td>
+                    <td th:text="${celular.seleccion}"></td>
+                </tr>
+            </th:block>
+        </tbody>
+    </table>
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
+    <a href="/celulares/tendencia">Ver Tendencia</a>
+</body>
+</html>
